@@ -59,4 +59,22 @@ public class OrderServiceCustomGlobalExceptionHandler extends ResponseEntityExce
         problemDetail.setProperty("timestamp", Instant.now());
         return ResponseEntity.status(status).body(problemDetail);
     }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotFoundException(
+            ProductNotFoundException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String requestUriEndpoint = request.getDescription(false);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8082/errors/not-found"));
+        problemDetail.setTitle("Product Not Found");
+        problemDetail.setInstance(URI.create(requestUriEndpoint.replace("uri=", "")));
+        problemDetail.setProperty("timestamp", Instant.now());
+        return ResponseEntity.status(status).body(problemDetail);
+    }
+
+    @ExceptionHandler(ForwardedFeignException.class)
+    public ResponseEntity<Object> handleForwardedFeignException(ForwardedFeignException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(ex.getErrorDetails());
+    }
 }
