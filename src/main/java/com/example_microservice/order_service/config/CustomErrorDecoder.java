@@ -16,8 +16,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            InputStream inputStream = response.body().asInputStream();
+        try (InputStream inputStream = response.body().asInputStream()) {
             Map<String, Object> details = objectMapper.readValue(inputStream, new TypeReference<>() {});
             return new ForwardedFeignException(response.status(), details);
         } catch (IOException e) {
