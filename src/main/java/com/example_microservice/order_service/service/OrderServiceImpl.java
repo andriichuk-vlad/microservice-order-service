@@ -44,13 +44,3 @@ public class OrderServiceImpl implements OrderService{
         return orderMapper.toDto(order, productById, orderRequest.quantity());
     }
 }
-
-//Тобі потрібно реалізувати зменшення (списання) залишків товару на складі.
-//Це завдання складається з двох частин:
-//    Ендпоінт у Product Service:У твоєму сервісі продуктів має бути метод (наприклад, PATCH або PUT запит),
-//який вміє приймати ID продукту та кількість, яку треба відняти від поточного складу.
-//    Оновлення ProductClient (Feign):Тобі потрібно буде додати цей новий метод у свій інтерфейс
-//ProductClient в Order Service.
-//    Виклик списання в OrderServiceImpl:Після того, як перевірка кількості пройшла успішно,
-//але перед (або одразу після) orderRepository.save(order), твій сервіс замовлень повинен зробити ще один виклик
-//через клієнт: наприклад, productClient.deductStock(orderRequest.productId(), orderRequest.quantity());.
