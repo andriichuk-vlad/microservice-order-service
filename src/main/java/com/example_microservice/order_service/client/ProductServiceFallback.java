@@ -17,7 +17,7 @@ public class ProductServiceFallback implements ProductClient {
     }
 
     @Override
-    public void decreaseQuantity(Long id, Integer quantity) {
+    public void decreaseQuantity(Long productId, Integer quantity) {
         throw new RuntimeException(cause);
     }
 }
